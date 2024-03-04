@@ -20,13 +20,13 @@ import TrackPlayer, {
 
 const App = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [mode, setMode] = useState('light');
   const playbackState = usePlaybackState();
+  const bgColor =  mode === 'light' ? '#fff' : '#000'
+  const textColor =  mode === 'light' ? '#000' : '#FFF'
   const progress = useProgress();
   const [isVisible,setIsVisible]=useState(false)
-
-  useEffect(() => {
-    setupPlayer();
-  }, []);
+  
   const setupPlayer = async () => {
     try {
       await TrackPlayer.setupPlayer();
@@ -44,23 +44,60 @@ const App = () => {
       console.log(e);
     }
   };
+  useEffect(() => {
+    setupPlayer();
+  }, []);
 
   return (
-    <LinearGradient
-    colors={['#a34c0d', '#592804', '#241001', '#000000']}
-    style={{flex: 1}}>
+    <View
+    style={{flex: 1 , backgroundColor: bgColor,}}>
     <StatusBar translucent backgroundColor={'transparent'} />
 
-    <Image
+ <View style={{ flexDirection: 'row',
+        width: '99%',
+        marginRight: 20,
+        justifyContent: 'space-between',
+        alignSelf: 'center',}}>
+ <Image
       source={require('./src/assets/left.png')}
       style={{
         width: 24,
         height: 24,
-        tintColor: 'white',
+        tintColor: textColor,
         marginTop: 60,
         marginLeft: 20,
       }}
     />
+      <TouchableOpacity activeOpacity={.5} onPress={()=> {mode=='light'? setMode('dark'): setMode('light')}}>
+        {
+          mode === 'light' ? ( 
+            <Image
+            source={require('./src/assets/light.png')}
+            style={{
+              width: 34,
+              height: 34,
+              tintColor: '#91BAE3',
+              marginTop: 60,
+              marginLeft: 20,
+              tintColor: '#'
+            }}
+          />
+          ) :  <Image
+          source={require('./src/assets/dark.png')}
+          style={{
+            width: 25,
+            height: 25,
+            tintColor: '#91BAE3',
+            marginTop: 60,
+            marginLeft: 20,
+            tintColor: '#'
+          }}
+        />
+        }
+     
+      </TouchableOpacity>
+   
+ </View>
     <View
       style={{
         width: '90%',
@@ -72,7 +109,7 @@ const App = () => {
         style={{
           width: '85%',
           height: 37,
-          backgroundColor: '#b06a41',
+          backgroundColor: '#91BAE3',
           borderRadius: 5,
           flexDirection: 'row',
           paddingLeft: 15,
@@ -80,22 +117,21 @@ const App = () => {
         }}>
         <Image
           source={require('./src/assets/search2.png')}
-          style={{width: 18, height: 18, tintColor: 'white'}}
+          style={{width: 18, height: 18, tintColor: '#000'}}
         />
-        <Text style={{color: 'white', marginLeft: 10}}>Find in Playlist</Text>
+        <Text style={{color: '#000', marginLeft: 10}}>Find in Playlist</Text>
       </View>
       <View
         style={{
           width: '15%',
           height: 37,
-          backgroundColor: '#b06a41',
-          borderRadius: 5,
-
+          backgroundColor: '#91BAE3',
+          borderRadius: 7,
           alignItems: 'center',
           justifyContent: 'center',
           marginLeft: 5,
         }}>
-        <Text style={{color: 'white', fontWeight: '600'}}>Sort</Text>
+        <Text style={{color: '#000', fontWeight: '600'}}>Sort</Text>
       </View>
     </View>
     <Image
@@ -111,7 +147,7 @@ const App = () => {
     <Text
       style={{
         fontSize: 30,
-        color: 'white',
+        color: '#000',
         fontWeight: '600',
         marginLeft: 20,
         marginTop: 20,
@@ -123,13 +159,13 @@ const App = () => {
         source={require('./src/assets/spotify.png')}
         style={{width: 18, height: 18}}
       />
-      <Text style={{color: 'white', fontSize: 14, marginLeft: 10}}>
+      <Text style={{color: textColor, fontSize: 14, marginLeft: 10}}>
         English Songs
       </Text>
     </View>
     <View style={{flexDirection: 'row', paddingLeft: 20, marginTop: 10}}>
-      <Text style={{color: '#bababa', fontSize: 12}}>20,169 saves</Text>
-      <Text style={{color: '#bababa', fontSize: 12, marginLeft: 10}}>
+      <Text style={{color: textColor, fontSize: 12}}>20,169 saves</Text>
+      <Text style={{color: textColor, fontSize: 12, marginLeft: 10}}>
         4h 26m
       </Text>
     </View>
@@ -144,14 +180,14 @@ const App = () => {
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <Image
           source={require('./src/assets/plus.png')}
-          style={{width: 18, height: 18, tintColor: '#bababa'}}
+          style={{width: 18, height: 18, tintColor: textColor}}
         />
         <Image
           source={require('./src/assets/arrow-down.png')}
           style={{
             width: 18,
             height: 18,
-            tintColor: '#bababa',
+            tintColor: textColor,
             marginLeft: 15,
           }}
         />
@@ -160,7 +196,7 @@ const App = () => {
           style={{
             width: 18,
             height: 18,
-            tintColor: '#bababa',
+            tintColor: textColor,
             marginLeft: 15,
           }}
         />
@@ -168,7 +204,7 @@ const App = () => {
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <Image
           source={require('./src/assets/suffle.png')}
-          style={{width: 30, height: 30, tintColor: '#bababa'}}
+          style={{width: 30, height: 30, tintColor: textColor}}
         />
         <TouchableOpacity
           onPress={async () => {
@@ -186,17 +222,18 @@ const App = () => {
                 height: 40,
                 marginLeft: 20,
                 marginRight: 10,
-                tintColor: '#3ad934',
+                tintColor: '#91BAE3',
               }}
             />
           ) : (
             <Image
               source={require('./src/assets/play-button.png')}
               style={{
-                width: 50,
-                height: 50,
+                width: 40,
+                height: 40,
                 marginLeft: 20,
                 marginRight: 10,
+                tintColor: '#91BAE3'
               }}
             />
           )}
@@ -230,8 +267,8 @@ const App = () => {
                 style={{width: 50, height: 50, borderRadius: 5}}
               />
               <View style={{marginLeft: 10}}>
-                <Text style={{color: 'white'}}>{item.title}</Text>
-                <Text style={{color: 'white', fontSize: 10}}>
+                <Text style={{color: textColor}}>{item.title}</Text>
+                <Text style={{color: textColor, fontSize: 10}}>
                   {item.artist}
                 </Text>
               </View>
@@ -241,7 +278,7 @@ const App = () => {
                   style={{
                     width: 18,
                     height: 18,
-                    tintColor: 'white',
+                    tintColor: textColor,
                     marginLeft: 20,
                   }}
                 />
@@ -249,7 +286,7 @@ const App = () => {
             </View>
             <Image
               source={require('./src/assets/option.png')}
-              style={{width: 18, height: 18, tintColor: '#bababa'}}
+              style={{width: 18, height: 18, tintColor: textColor}}
             />
           </TouchableOpacity>
         );
@@ -263,7 +300,7 @@ const App = () => {
         height: 70,
         position: 'absolute',
         bottom: 0,
-        backgroundColor: 'rgba(0,0,0,0.9)',
+        backgroundColor: '#91BAE3',
         flexDirection: 'row',
         alignItems: 'center',
         paddingLeft: 20,
@@ -278,10 +315,10 @@ const App = () => {
           style={{width: 50, height: 50, borderRadius: 5}}
         />
         <View style={{marginLeft: 10}}>
-          <Text style={{color: 'white'}}>
+          <Text style={{color: '#000'}}>
             {songsList[currentIndex].title}
           </Text>
-          <Text style={{color: 'white', fontSize: 10}}>
+          <Text style={{color: '#000', fontSize: 10}}>
             {songsList[currentIndex].artist}
           </Text>
         </View>
@@ -292,7 +329,6 @@ const App = () => {
           if (State.Playing == playbackState.state) {
             await TrackPlayer.pause();
           } else {
-            // await TrackPlayer.skip(currentIndex);
             await TrackPlayer.play();
           }
         }}>
@@ -302,16 +338,18 @@ const App = () => {
               ? require('./src/assets/pause2.png')
               : require('./src/assets/play.png')
           }
-          style={{width: 30, height: 30, tintColor: 'white'}}
+          style={{width: 30, height: 30, tintColor: bgColor}}
         />
       </TouchableOpacity>
     </TouchableOpacity>
     <SongPlayer
     isVisible={isVisible}
-      songsList={songsList}
+    mode={mode}
+    songsList={songsList}
       currentIndex={currentIndex}
       playbackState={playbackState}
       progress={progress}
+      setCurrentIndex={setCurrentIndex}
       onChange={(x)=>{
         setCurrentIndex(x)
       }}
@@ -319,7 +357,7 @@ const App = () => {
         setIsVisible(false)
       }}
     />
-  </LinearGradient>
+  </View>
   )
 }
 
